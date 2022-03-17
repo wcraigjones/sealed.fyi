@@ -13,13 +13,13 @@ Lets make a simple, but complete, go project to learn more about cryptography an
 * WAF for rate limiting
 
 ## URL Structure
-sealed.fyi#aaaaaaaa.aa.aaaaaaaaaa
+sealed.fyi#aaaaaaaa.aaa.aaaaaaaaaa
 
-- 8 are id
-- 2 meta (part of id)
-- 10 are password (additional password may be required)
+- 8 are id (6 bytes)
+- 4 meta (3 bytes)
+- 8 are password (additional password may be required)
 
-10 setting bits
+12 setting bits
 0 burn on open
 1 try to burn on prompt
 2 burn on probe
@@ -28,7 +28,7 @@ sealed.fyi#aaaaaaaa.aa.aaaaaaaaaa
 5 file
 6 burn without password
 7 probe without password
-8 - 9 reserved
+8 - 11 reserved
 
 ## API
 

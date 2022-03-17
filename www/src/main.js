@@ -15,8 +15,9 @@ setStatusString("loaded")
 
 fetch('https://api.sealed.fyi/test', {
     headers: {
-        'Content-Type': "text/plain"
-    }
+        'Content-Type': 'text/plain'
+    },
+    method: 'POST'
 })
 .then((response) => {
     setStatusString("got key")
