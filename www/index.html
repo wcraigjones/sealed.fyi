@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>sealed.fyi</h1>
+<p>coming soon</p>
+<br>
+<br>
+<p id="test-output">loading api test...</p>
+<br>
+<p id="test-encrypt">loading api test...</p>
+<script>
+    function str2ab(str) {
+        var arrBuff = new ArrayBuffer(str.length);
+        var bytes = new Uint8Array(arrBuff);
+        for (var iii = 0; iii < str.length; iii++) {
+            bytes[iii] = str.charCodeAt(iii);
+        }
+        return bytes;
+    }
+
+    fetch('https://api.sealed.fyi/test', {
+        headers: {
+            'Content-Type': "text/plain"
+        }
+    })
+    .then((response) => {
+        return response.json()
+    })
+    .then((response) => {
+        console.log("parsed json")
+        document.getElementById("test-output").textContent = response.key.trim()
+        // var publicKeyAB = str2ab(atob(response.key)); 
+        // fetch the part of the PEM string between header and footer
+        const pem = response.key.trim()
+        const pemHeader = "-----BEGIN PUBLIC KEY-----";
+        const pemFooter = "-----END PUBLIC KEY-----";
+        const pemContents = pem.substring(pemHeader.length, pem.length - pemFooter.length);
+        // base64 decode the string to get the binary data
+        const binaryDerString = window.atob(pemContents);
+        // convert from a binary string to an ArrayBuffer
+        const binaryDer = str2ab(binaryDerString);
+
+        return window.crypto.subtle.importKey(
+        "spki",
+        binaryDer,
+        {
+            name: "RSA-OAEP",
+            hash: "SHA-256"
+        },
+        true,
+        ["encrypt"])
+    }).then(function(publicKey){
+        console.log("imported key")
+        return crypto.subtle.encrypt(
+            {
+            name: "RSA-OAEP"
+            },
+            publicKey,
+            str2ab("hello-world")
+            );
+            
+    }).then(function(data){
+        console.log("encrypted data")
+        console.log(data)
+    }).catch(function(err) {
+        console.log(err );
+    }); 
+</script>
+<br>
+<br>
+<p>updated 3/2/22-8:52</p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<a href="https://www.flaticon.com/free-icons/security" title="security icons">Security icons created by Freepik - Flaticon</a>
+</body>
+</html> 
