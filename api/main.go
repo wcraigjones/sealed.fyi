@@ -108,8 +108,6 @@ func createHandler(ctx context.Context, request events.APIGatewayProxyRequest) (
 		ID       string `json:"id"`
 		Password string `json:"password"`
 		Key      string `json:"key"`
-		Salt     string `json:"salt"`
-		Private  string `json:"private"`
 	}
 
 	id := make([]byte, 8)
@@ -127,14 +125,12 @@ func createHandler(ctx context.Context, request events.APIGatewayProxyRequest) (
 	resp.Password = base64.RawURLEncoding.EncodeToString(password)
 	resp.Key = base64.RawURLEncoding.EncodeToString(publicKeyBytes)
 
-	// Remove these
-	resp.Salt = base64.RawURLEncoding.EncodeToString(salt)
-	resp.Private = base64.RawURLEncoding.EncodeToString(privateKeyBytes)
+	privateKeyStr := base64.RawURLEncoding.EncodeToString(privateKeyBytes)
 
 	drow := DynamoRow{
 		ID:         resp.ID,
-		Salt:       resp.Salt,
-		PrivateKey: &resp.Private,
+		Salt:       base64.RawURLEncoding.EncodeToString(salt),
+		PrivateKey: &privateKeyStr,
 		Created:    time.Now().UTC().Format(time.RFC3339),
 	}
 
@@ -166,14 +162,20 @@ func generateKey() (password, salt, publicKeyBytes, privateKeyBytes []byte, err 
 		return nil, nil, nil, nil, errors.Wrap(err, "could not generate key")
 	}
 
-	privateKeyBytes = x509.MarshalPKCS1PrivateKey(privatekey)
+	privateKeyBytes, err = x509.MarshalPKCS8PrivateKey(privatekey)
+	if err != nil {
+		return nil, nil, nil, nil, errors.Wrap(err, "could not marshal private key")
+	}
 	privateKeyBlock := &pem.Block{
 		Type:  "RSA PRIVATE KEY",
 		Bytes: privateKeyBytes,
 	}
 	privateKeyBytes = pem.EncodeToMemory(privateKeyBlock)
 
-	publicKeyBytes = x509.MarshalPKCS1PublicKey(&privatekey.PublicKey)
+	publicKeyBytes, err = x509.MarshalPKIXPublicKey(&privatekey.PublicKey)
+	if err != nil {
+		return nil, nil, nil, nil, errors.Wrap(err, "could not marshal public key")
+	}
 	publicKeyBlock := &pem.Block{
 		Type:  "RSA PUBLIC KEY",
 		Bytes: publicKeyBytes,

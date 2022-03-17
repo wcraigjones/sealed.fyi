@@ -11,53 +11,72 @@ function setStatusString(str) {
     $("#status").text(str)
 }
 
+var decode = function(input) {
+    // Replace non-url compatible chars with base64 standard chars
+    input = input
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+    // Pad out with standard base64 required padding characters
+    var pad = input.length % 4;
+    if(pad) {
+      if(pad === 1) {
+        throw new Error('InvalidLengthError: Input base64url string is the wrong length to determine padding');
+      }
+      input += new Array(5-pad).join('=');
+    }
+
+    return window.atob(input);
+}
+
+
 setStatusString("loaded")
 
-fetch('https://api.sealed.fyi/test', {
-    headers: {
-        'Content-Type': 'text/plain'
-    },
-    method: 'POST'
-})
-.then((response) => {
+async function loadKey() {
+    setStatusString("requesting key")
+    createResponse = await fetch('https://api.sealed.fyi/test', {
+        headers: {
+            'Content-Type': 'text/plain'
+        },
+        method: 'POST'
+    })
+
     setStatusString("got key")
-    return response.json()
-})
-.then((response) => {
-    setStatusString("parsed json")
-    // fetch the part of the PEM string between header and footer
-    const pem = response.key.trim()
-    const pemHeader = "-----BEGIN PUBLIC KEY-----";
-    const pemFooter = "-----END PUBLIC KEY-----";
+    createResponse = await createResponse.json()
+
+
+    setStatusString("parsed json") 
+    console.log(createResponse)   
+    const id = createResponse.id
+    const password = createResponse.password
+    const pem = decode(createResponse.key).trim()
+    console.log(pem)
+    const pemHeader = "-----BEGIN RSA PUBLIC KEY-----";
+    const pemFooter = "-----END RSA PUBLIC KEY-----";
     const pemContents = pem.substring(pemHeader.length, pem.length - pemFooter.length);
     // base64 decode the string to get the binary data
     const binaryDerString = window.atob(pemContents);
     // convert from a binary string to an ArrayBuffer
     const binaryDer = str2ab(binaryDerString);
 
-    return window.crypto.subtle.importKey(
-    "spki",
-    binaryDer,
-    {
-        name: "RSA-OAEP",
-        hash: "SHA-256"
-    },
-    true,
-    ["encrypt"])
-}).then(function(publicKey){
-    setStatusString("imported key")
-    return crypto.subtle.encrypt(
+    publicKey = await window.crypto.subtle.importKey(
+        "spki",
+        binaryDer,
         {
-        name: "RSA-OAEP"
+            name: "RSA-OAEP",
+            hash: "SHA-256"
         },
-        publicKey,
-        str2ab("hello-world")
-        );
-        
-}).then(function(data){
-    setStatusString("encrypted data")
-    console.log(data)
+        true,
+        ["encrypt"])
+
+    setStatusString("imported key")
+
+    return [id, password, publicKey]
+}
+
+loadKey().then(([id, password, publicKey]) => {
+    setStatusString("imported id: " + id)
 }).catch(function(err) {
     setStatusString("error")
-    console.log(err );
+    console.log(err)
 }); 
