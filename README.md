@@ -4,6 +4,7 @@ Lets make a simple, but complete, go project to learn more about cryptography an
 
 ## TODO:
 * set cloudfront caching again
+* make the code not super hacky
 
 ## Stack 
 * Cloudfront for https
