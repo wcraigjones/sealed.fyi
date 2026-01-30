@@ -37,11 +37,18 @@ sealed.fyi/
 │       └── 4/{a-e}/TASK.md   # Phase 4: Production & hardening (5 streams)
 │
 ├── .ob1/
-│   └── skills/               # OB1 local skills for code review
-│       ├── claude-review/    # Claude Opus 4 review
-│       ├── codex-review/     # Codex GPT-5.2 xhigh review
-│       ├── gemini-review/    # Gemini 2.5 Pro review
-│       └── mega-review/      # All 3 in parallel, synthesized
+│   ├── agents/               # OB1 review agents (subagents with specific models)
+│   │   ├── opus-review.md    # Claude Opus 4.5 reviewer
+│   │   ├── gemini-review.md  # Gemini 3 Pro reviewer (1M context)
+│   │   ├── codex-review.md   # OpenAI Codex 5.2 reviewer
+│   │   ├── glm-review.md     # Z.AI GLM 4.7 reviewer
+│   │   └── kimi-review.md    # Moonshot Kimi K2.5 reviewer
+│   │
+│   └── skills/               # OB1 local skills (legacy CLI-based review)
+│       ├── claude-review/    # Claude CLI review
+│       ├── codex-review/     # Codex CLI review
+│       ├── gemini-review/    # Gemini CLI review
+│       └── mega-review/      # All 3 CLIs in parallel
 │
 ├── frontend/                 # (To be created)
 │   ├── index.html
@@ -186,18 +193,25 @@ Each work stream has a detailed task file at `docs/work/{phase}/{stream}/TASK.md
 
 ---
 
-## Available Skills
+## Available Review Agents
 
-The project includes OB1 skills for multi-model code review:
+The project includes 5 review agents that run as OB1 subagents. Each agent writes a review file to the work item folder.
 
-| Skill | Command | Model |
-|-------|---------|-------|
-| `claude-review` | `claude -p --model opus --dangerously-skip-permissions` | Claude Opus 4 |
-| `codex-review` | `codex exec --model gpt-5.2-codex --config model_reasoning_effort="xhigh" --full-auto` | GPT-5.2 Codex |
-| `gemini-review` | `gemini -p --model gemini-2.5-pro --yolo` | Gemini 2.5 Pro |
-| `mega-review` | All 3 in parallel | All models |
+| Agent | Model | Output File |
+|-------|-------|-------------|
+| `opus-review` | Claude Opus 4.5 | `{work_path}/opus-review.md` |
+| `gemini-review` | Gemini 3 Pro (1M context) | `{work_path}/gemini-review.md` |
+| `codex-review` | OpenAI Codex 5.2 | `{work_path}/codex-review.md` |
+| `glm-review` | Z.AI GLM 4.7 | `{work_path}/glm-review.md` |
+| `kimi-review` | Moonshot Kimi K2.5 | `{work_path}/kimi-review.md` |
 
-Use `mega-review` for comprehensive code review with synthesized feedback from all three models.
+### Review Agent Behavior
+
+- Each agent reads the task requirements from `TASK.md`
+- Each agent checks for previous reviews and addresses whether issues were resolved
+- Each agent writes a structured review with a **Quality Score (1-10)**
+- Reviews contain only **substantial feedback** — no nits or style preferences
+- Approval status: **APPROVED** (score ≥ 7) or **NEEDS WORK** (score < 7)
 
 ---
 
@@ -215,15 +229,43 @@ Use `mega-review` for comprehensive code review with synthesized feedback from a
 - Check off exit criteria as you complete them
 - If blocked or scope changes, update the task file to reflect current state
 
-### 3. Before Completing
-- **Run `mega-review`** on all code you created or modified
-- Address critical issues flagged by multiple models
-- Document any unresolved issues or known limitations
+### 3. Multi-Model Review (REQUIRED)
 
-### 4. Update Task File
+After completing implementation, you **MUST** run all 5 review agents:
+
+```
+delegate_to_agent(agent_name="opus-review", work_path="docs/work/{phase}/{stream}")
+delegate_to_agent(agent_name="gemini-review", work_path="docs/work/{phase}/{stream}")
+delegate_to_agent(agent_name="codex-review", work_path="docs/work/{phase}/{stream}")
+delegate_to_agent(agent_name="glm-review", work_path="docs/work/{phase}/{stream}")
+delegate_to_agent(agent_name="kimi-review", work_path="docs/work/{phase}/{stream}")
+```
+
+Each agent will write a review file to the work folder:
+- `docs/work/{phase}/{stream}/opus-review.md`
+- `docs/work/{phase}/{stream}/gemini-review.md`
+- `docs/work/{phase}/{stream}/codex-review.md`
+- `docs/work/{phase}/{stream}/glm-review.md`
+- `docs/work/{phase}/{stream}/kimi-review.md`
+
+### 4. Respond to Reviews
+
+After all reviews complete:
+
+1. **Read all 5 review files**
+2. **Check scores** — ALL agents must give a score of **7 or higher** for the task to be complete
+3. **If any score < 7:**
+   - Address the critical issues and warnings raised
+   - Re-run the review agents that gave low scores
+   - Repeat until all scores ≥ 7
+4. **If all scores ≥ 7:**
+   - Proceed to update the task file
+
+### 5. Update Task File
+
 - **Always update `docs/work/{phase}/{stream}/TASK.md` before returning to the user**
 - Mark completed exit criteria with `[x]`
-- Add any notes, blockers, or follow-up items
+- Add review scores summary
 - If task is complete, add a `## Completed` section with summary and date
 
 ### Example Task File Update
@@ -232,14 +274,42 @@ Use `mega-review` for comprehensive code review with synthesized feedback from a
 
 - [x] All functions implemented
 - [x] All tests passing
-- [x] Code reviewed via mega-review
+- [x] All review agents scored ≥ 7
 - [ ] Awaiting integration testing (Phase 3)
+
+## Review Scores
+
+| Agent | Score | Status |
+|-------|-------|--------|
+| opus-review | 8/10 | APPROVED |
+| gemini-review | 7/10 | APPROVED |
+| codex-review | 8/10 | APPROVED |
+| glm-review | 7/10 | APPROVED |
+| kimi-review | 8/10 | APPROVED |
 
 ## Completed
 - **Date:** 2026-01-30
-- **Summary:** Implemented crypto.js with all functions per contract. Mega-review passed with no critical issues.
+- **Summary:** Implemented crypto.js with all functions per contract. All 5 review agents approved.
 - **Notes:** Consider adding Web Worker support for PoW in future iteration.
 ```
+
+### Review Iteration Example
+
+If initial reviews return mixed scores:
+
+```
+opus-review:  8/10 APPROVED
+gemini-review: 6/10 NEEDS WORK (missing input validation)
+codex-review: 7/10 APPROVED
+glm-review:   5/10 NEEDS WORK (error handling incomplete)
+kimi-review:  7/10 APPROVED
+```
+
+You must:
+1. Fix the input validation issue flagged by gemini-review
+2. Fix the error handling issue flagged by glm-review
+3. Re-run `gemini-review` and `glm-review`
+4. Continue until both return ≥ 7
 
 ---
 
