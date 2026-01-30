@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1769810298603" clover="3.2.0">
+  <project timestamp="1769810298603" name="All files">
+    <metrics statements="156" coveredstatements="150" conditionals="89" coveredconditionals="84" methods="38" coveredmethods="38" elements="283" coveredelements="272" complexity="0" loc="156" ncloc="156" packages="1" files="5" classes="5"/>
+    <file name="dynamo.js" path="/workspace/sealed.fyi/backend/functions/shared/dynamo.js">
+      <metrics statements="41" coveredstatements="39" conditionals="12" coveredconditionals="9" methods="10" coveredmethods="10"/>
+      <line num="19" count="13" type="cond" truecount="1" falsecount="1"/>
+      <line num="26" count="12" type="stmt"/>
+      <line num="28" count="12" type="cond" truecount="1" falsecount="1"/>
+      <line num="29" count="0" type="stmt"/>
+      <line num="32" count="12" type="stmt"/>
+      <line num="33" count="12" type="stmt"/>
+      <line num="41" count="1" type="stmt"/>
+      <line num="44" count="13" type="cond" truecount="2" falsecount="0"/>
+      <line num="45" count="12" type="stmt"/>
+      <line num="47" count="13" type="stmt"/>
+      <line num="54" count="12" type="stmt"/>
+      <line num="63" count="2" type="stmt"/>
+      <line num="65" count="2" type="stmt"/>
+      <line num="70" count="2" type="stmt"/>
+      <line num="71" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="89" count="2" type="stmt"/>
+      <line num="91" count="2" type="stmt"/>
+      <line num="97" count="2" type="stmt"/>
+      <line num="105" count="3" type="stmt"/>
+      <line num="107" count="3" type="stmt"/>
+      <line num="112" count="3" type="stmt"/>
+      <line num="122" count="3" type="stmt"/>
+      <line num="123" count="3" type="stmt"/>
+      <line num="125" count="3" type="stmt"/>
+      <line num="138" count="3" type="stmt"/>
+      <line num="139" count="2" type="stmt"/>
+      <line num="142" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="143" count="1" type="stmt"/>
+      <line num="144" count="1" type="stmt"/>
+      <line num="147" count="1" type="stmt"/>
+      <line num="157" count="2" type="stmt"/>
+      <line num="159" count="2" type="stmt"/>
+      <line num="168" count="2" type="stmt"/>
+      <line num="169" count="2" type="stmt"/>
+      <line num="170" count="1" type="stmt"/>
+      <line num="172" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="173" count="1" type="stmt"/>
+      <line num="175" count="0" type="stmt"/>
+      <line num="186" count="1" type="stmt"/>
+      <line num="188" count="1" type="stmt"/>
+      <line num="198" count="1" type="stmt"/>
+    </file>
+    <file name="pow.js" path="/workspace/sealed.fyi/backend/functions/shared/pow.js">
+      <metrics statements="23" coveredstatements="22" conditionals="17" coveredconditionals="17" methods="3" coveredmethods="3"/>
+      <line num="8" count="1" type="stmt"/>
+      <line num="9" count="1" type="stmt"/>
+      <line num="23" count="4" type="stmt"/>
+      <line num="35" count="8" type="stmt"/>
+      <line num="37" count="8" type="stmt"/>
+      <line num="38" count="10" type="stmt"/>
+      <line num="40" count="10" type="cond" truecount="2" falsecount="0"/>
+      <line num="41" count="2" type="stmt"/>
+      <line num="44" count="8" type="stmt"/>
+      <line num="45" count="20" type="cond" truecount="2" falsecount="0"/>
+      <line num="46" count="12" type="stmt"/>
+      <line num="48" count="8" type="stmt"/>
+      <line num="54" count="0" type="stmt"/>
+      <line num="65" count="19" type="cond" truecount="6" falsecount="0"/>
+      <line num="66" count="7" type="stmt"/>
+      <line num="69" count="12" type="cond" truecount="4" falsecount="0"/>
+      <line num="70" count="2" type="stmt"/>
+      <line num="73" count="10" type="cond" truecount="2" falsecount="0"/>
+      <line num="74" count="2" type="stmt"/>
+      <line num="78" count="8" type="stmt"/>
+      <line num="81" count="8" type="stmt"/>
+      <line num="84" count="8" type="stmt"/>
+      <line num="86" count="8" type="stmt"/>
+    </file>
+    <file name="responses.js" path="/workspace/sealed.fyi/backend/functions/shared/responses.js">
+      <metrics statements="8" coveredstatements="8" conditionals="1" coveredconditionals="1" methods="7" coveredmethods="7"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="23" count="6" type="stmt"/>
+      <line num="36" count="5" type="stmt"/>
+      <line num="56" count="8" type="stmt"/>
+      <line num="69" count="6" type="stmt"/>
+      <line num="84" count="5" type="stmt"/>
+      <line num="100" count="5" type="stmt"/>
+      <line num="113" count="5" type="stmt"/>
+    </file>
+    <file name="token.js" path="/workspace/sealed.fyi/backend/functions/shared/token.js">
+      <metrics statements="22" coveredstatements="22" conditionals="11" coveredconditionals="11" methods="7" coveredmethods="7"/>
+      <line num="9" count="1" type="stmt"/>
+      <line num="16" count="12" type="stmt"/>
+      <line num="29" count="6" type="stmt"/>
+      <line num="30" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="31" count="1" type="stmt"/>
+      <line num="34" count="5" type="stmt"/>
+      <line num="36" count="5" type="stmt"/>
+      <line num="46" count="5" type="stmt"/>
+      <line num="55" count="6" type="stmt"/>
+      <line num="56" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="57" count="1" type="stmt"/>
+      <line num="60" count="5" type="stmt"/>
+      <line num="61" count="5" type="stmt"/>
+      <line num="64" count="2" type="cond" truecount="7" falsecount="0"/>
+      <line num="66" count="1" type="stmt"/>
+      <line num="69" count="1" type="stmt"/>
+      <line num="72" count="3" type="stmt"/>
+      <line num="81" count="3" type="stmt"/>
+      <line num="90" count="3" type="stmt"/>
+      <line num="92" count="3" type="stmt"/>
+      <line num="101" count="3" type="stmt"/>
+      <line num="110" count="3" type="stmt"/>
+    </file>
+    <file name="validation.js" path="/workspace/sealed.fyi/backend/functions/shared/validation.js">
+      <metrics statements="62" coveredstatements="59" conditionals="48" coveredconditionals="46" methods="11" coveredmethods="11"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="8" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="12" count="1" type="stmt"/>
+      <line num="16" count="1" type="stmt"/>
+      <line num="19" count="1" type="stmt"/>
+      <line num="22" count="1" type="stmt"/>
+      <line num="25" count="1" type="stmt"/>
+      <line num="33" count="24" type="cond" truecount="4" falsecount="0"/>
+      <line num="34" count="9" type="stmt"/>
+      <line num="38" count="15" type="stmt"/>
+      <line num="41" count="15" type="cond" truecount="2" falsecount="0"/>
+      <line num="42" count="4" type="stmt"/>
+      <line num="46" count="11" type="cond" truecount="1" falsecount="1"/>
+      <line num="47" count="0" type="stmt"/>
+      <line num="50" count="11" type="stmt"/>
+      <line num="52" count="11" type="stmt"/>
+      <line num="53" count="11" type="stmt"/>
+      <line num="55" count="0" type="stmt"/>
+      <line num="65" count="11" type="cond" truecount="1" falsecount="1"/>
+      <line num="66" count="0" type="stmt"/>
+      <line num="70" count="11" type="stmt"/>
+      <line num="71" count="11" type="stmt"/>
+      <line num="73" count="11" type="cond" truecount="2" falsecount="0"/>
+      <line num="74" count="4" type="stmt"/>
+      <line num="75" count="7" type="cond" truecount="2" falsecount="0"/>
+      <line num="76" count="3" type="stmt"/>
+      <line num="79" count="11" type="stmt"/>
+      <line num="88" count="21" type="cond" truecount="4" falsecount="0"/>
+      <line num="89" count="7" type="stmt"/>
+      <line num="92" count="14" type="stmt"/>
+      <line num="101" count="17" type="cond" truecount="4" falsecount="0"/>
+      <line num="102" count="6" type="stmt"/>
+      <line num="105" count="11" type="cond" truecount="2" falsecount="0"/>
+      <line num="114" count="13" type="cond" truecount="4" falsecount="0"/>
+      <line num="115" count="5" type="stmt"/>
+      <line num="118" count="8" type="cond" truecount="2" falsecount="0"/>
+      <line num="127" count="11" type="cond" truecount="2" falsecount="0"/>
+      <line num="128" count="6" type="stmt"/>
+      <line num="131" count="5" type="stmt"/>
+      <line num="132" count="5" type="cond" truecount="2" falsecount="0"/>
+      <line num="141" count="7" type="cond" truecount="2" falsecount="0"/>
+      <line num="142" count="4" type="stmt"/>
+      <line num="145" count="3" type="stmt"/>
+      <line num="146" count="3" type="stmt"/>
+      <line num="156" count="7" type="cond" truecount="2" falsecount="0"/>
+      <line num="157" count="1" type="stmt"/>
+      <line num="160" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="161" count="3" type="stmt"/>
+      <line num="164" count="3" type="stmt"/>
+      <line num="165" count="3" type="stmt"/>
+      <line num="174" count="11" type="cond" truecount="2" falsecount="0"/>
+      <line num="175" count="6" type="stmt"/>
+      <line num="179" count="5" type="stmt"/>
+      <line num="188" count="11" type="cond" truecount="2" falsecount="0"/>
+      <line num="189" count="3" type="stmt"/>
+      <line num="193" count="8" type="cond" truecount="2" falsecount="0"/>
+      <line num="194" count="3" type="stmt"/>
+      <line num="198" count="5" type="stmt"/>
+      <line num="207" count="10" type="cond" truecount="2" falsecount="0"/>
+      <line num="208" count="5" type="stmt"/>
+      <line num="212" count="5" type="stmt"/>
+    </file>
+  </project>
+</coverage>
