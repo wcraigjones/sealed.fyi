@@ -9,7 +9,7 @@ sealed.fyi is organized into 4 sequential phases. Phases must complete before th
 | Phase | Description | Streams | Status |
 |-------|-------------|---------|--------|
 | **1** | Contracts & Schemas | 1 | ✅ Complete |
-| **2** | Core Implementation | 10 | 🔄 In Progress (3/10) |
+| **2** | Core Implementation | 10 | 🔄 In Progress (4/10) |
 | **3** | Integration & Testing | 6 | ⏳ Pending |
 | **4** | Production & Hardening | 5 | ⏳ Pending |
 
@@ -33,7 +33,7 @@ sealed.fyi is organized into 4 sequential phases. Phases must complete before th
 | **2D** | Create Secret Lambda | ⏳ Pending | `backend/functions/create-secret/` |
 | **2E** | Get Secret Lambda | ⏳ Pending | `backend/functions/get-secret/` |
 | **2F** | Burn Secret Lambda | ⏳ Pending | `backend/functions/burn-secret/` |
-| **2G** | Shared Backend Utilities | ⏳ Pending | `backend/functions/shared/` |
+| **2G** | Shared Backend Utilities | ✅ Complete | `backend/functions/shared/` |
 | **2H** | Frontend HTML/CSS | ⏳ Pending | `frontend/index.html`, `frontend/css/style.css` |
 | **2I** | Frontend JS Application | ⏳ Pending | `frontend/js/app.js`, `frontend/js/api.js`, `frontend/js/storage.js` |
 | **2J** | Infrastructure & Local Dev | ✅ Complete | `backend/template.yaml`, `backend/samconfig.toml`, `scripts/local-setup.sh` |
@@ -78,6 +78,8 @@ sealed.fyi is organized into 4 sequential phases. Phases must complete before th
 
 ## Recent Updates
 
+- **2026-01-30**: Phase 2G code review complete - All 5 review agents (Opus 9/10, Gemini 10/10, Codex 8/10, GLM 9/10, Kimi 8/10) approved. Fixed API contract mismatch in decrementViews. 149 tests passing, ~98% coverage.
+- **2026-01-30**: Completed Phase 2G (Shared Backend Utilities) - 147 tests passing, 97.88% coverage. Modules: dynamo.js, token.js, pow.js, responses.js, validation.js
 - **2026-01-30**: Completed Phase 2C (Create Token Lambda) - 23 tests passing, JWT token issuance with PoW challenge
 - **2026-01-30**: Completed Phase 2A (Crypto Library) - 47 tests passing
 - **2026-01-30**: Completed Phase 2J (Infrastructure) - SAM template validated

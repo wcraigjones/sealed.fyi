@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1769812756541" clover="3.2.0">
+  <project timestamp="1769812756541" name="All files">
+    <metrics statements="238" coveredstatements="233" conditionals="180" coveredconditionals="175" methods="48" coveredmethods="48" elements="466" coveredelements="456" complexity="0" loc="238" ncloc="238" packages="1" files="5" classes="5"/>
+    <file name="dynamo.js" path="/Users/wcj/Projects/sealed.fyi.worktrees/2g/backend/functions/shared/dynamo.js">
+      <metrics statements="58" coveredstatements="56" conditionals="29" coveredconditionals="27" methods="11" coveredmethods="11"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="13" count="1" type="cond" truecount="2" falsecount="0"/>
+      <line num="14" count="1" type="stmt"/>
+      <line num="21" count="15" type="stmt"/>
+      <line num="26" count="15" type="cond" truecount="1" falsecount="1"/>
+      <line num="27" count="0" type="stmt"/>
+      <line num="30" count="15" type="stmt"/>
+      <line num="31" count="15" type="stmt"/>
+      <line num="39" count="1" type="stmt"/>
+      <line num="46" count="16" type="cond" truecount="2" falsecount="0"/>
+      <line num="47" count="15" type="stmt"/>
+      <line num="49" count="16" type="stmt"/>
+      <line num="56" count="25" type="stmt"/>
+      <line num="65" count="2" type="stmt"/>
+      <line num="67" count="2" type="stmt"/>
+      <line num="72" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="91" count="3" type="stmt"/>
+      <line num="93" count="3" type="stmt"/>
+      <line num="105" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="106" count="1" type="stmt"/>
+      <line num="109" count="3" type="stmt"/>
+      <line num="122" count="2" type="stmt"/>
+      <line num="124" count="2" type="stmt"/>
+      <line num="138" count="5" type="stmt"/>
+      <line num="139" count="5" type="stmt"/>
+      <line num="142" count="5" type="cond" truecount="2" falsecount="0"/>
+      <line num="146" count="5" type="stmt"/>
+      <line num="153" count="5" type="cond" truecount="2" falsecount="0"/>
+      <line num="154" count="4" type="stmt"/>
+      <line num="157" count="5" type="stmt"/>
+      <line num="158" count="5" type="stmt"/>
+      <line num="167" count="4" type="stmt"/>
+      <line num="168" count="4" type="stmt"/>
+      <line num="171" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="172" count="1" type="stmt"/>
+      <line num="173" count="1" type="stmt"/>
+      <line num="176" count="4" type="stmt"/>
+      <line num="178" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="180" count="1" type="stmt"/>
+      <line num="182" count="0" type="stmt"/>
+      <line num="193" count="3" type="stmt"/>
+      <line num="195" count="3" type="stmt"/>
+      <line num="196" count="3" type="stmt"/>
+      <line num="204" count="1" type="stmt"/>
+      <line num="206" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="208" count="1" type="stmt"/>
+      <line num="210" count="1" type="stmt"/>
+      <line num="222" count="1" type="stmt"/>
+      <line num="224" count="1" type="stmt"/>
+      <line num="242" count="6" type="cond" truecount="5" falsecount="0"/>
+      <line num="243" count="3" type="stmt"/>
+      <line num="246" count="3" type="stmt"/>
+      <line num="247" count="3" type="stmt"/>
+      <line num="249" count="3" type="stmt"/>
+      <line num="261" count="3" type="stmt"/>
+      <line num="262" count="3" type="stmt"/>
+      <line num="265" count="1" type="stmt"/>
+    </file>
+    <file name="pow.js" path="/Users/wcj/Projects/sealed.fyi.worktrees/2g/backend/functions/shared/pow.js">
+      <metrics statements="29" coveredstatements="29" conditionals="20" coveredconditionals="19" methods="5" coveredmethods="5"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="6" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="22" count="5" type="stmt"/>
+      <line num="34" count="7159" type="stmt"/>
+      <line num="43" count="7163" type="stmt"/>
+      <line num="45" count="7163" type="stmt"/>
+      <line num="46" count="7193" type="stmt"/>
+      <line num="48" count="7193" type="cond" truecount="2" falsecount="0"/>
+      <line num="50" count="31" type="stmt"/>
+      <line num="54" count="7162" type="stmt"/>
+      <line num="55" count="7162" type="stmt"/>
+      <line num="59" count="7163" type="stmt"/>
+      <line num="71" count="7169" type="cond" truecount="4" falsecount="0"/>
+      <line num="72" count="4" type="stmt"/>
+      <line num="74" count="7165" type="cond" truecount="4" falsecount="0"/>
+      <line num="75" count="4" type="stmt"/>
+      <line num="77" count="7161" type="cond" truecount="5" falsecount="0"/>
+      <line num="78" count="4" type="stmt"/>
+      <line num="82" count="7157" type="stmt"/>
+      <line num="85" count="7157" type="stmt"/>
+      <line num="88" count="7157" type="stmt"/>
+      <line num="90" count="7157" type="stmt"/>
+      <line num="102" count="6" type="stmt"/>
+      <line num="103" count="7151" type="stmt"/>
+      <line num="104" count="7151" type="cond" truecount="2" falsecount="0"/>
+      <line num="105" count="5" type="stmt"/>
+      <line num="108" count="1" type="stmt"/>
+      <line num="111" count="1" type="stmt"/>
+    </file>
+    <file name="responses.js" path="/Users/wcj/Projects/sealed.fyi.worktrees/2g/backend/functions/shared/responses.js">
+      <metrics statements="15" coveredstatements="15" conditionals="4" coveredconditionals="4" methods="9" coveredmethods="9"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="17" count="17" type="stmt"/>
+      <line num="25" count="17" type="cond" truecount="2" falsecount="0"/>
+      <line num="26" count="16" type="stmt"/>
+      <line num="28" count="1" type="stmt"/>
+      <line num="31" count="17" type="stmt"/>
+      <line num="41" count="2" type="stmt"/>
+      <line num="50" count="1" type="stmt"/>
+      <line num="59" count="5" type="stmt"/>
+      <line num="68" count="2" type="stmt"/>
+      <line num="83" count="1" type="stmt"/>
+      <line num="95" count="2" type="stmt"/>
+      <line num="104" count="2" type="stmt"/>
+      <line num="112" count="2" type="stmt"/>
+      <line num="115" count="1" type="stmt"/>
+    </file>
+    <file name="token.js" path="/Users/wcj/Projects/sealed.fyi.worktrees/2g/backend/functions/shared/token.js">
+      <metrics statements="44" coveredstatements="44" conditionals="25" coveredconditionals="25" methods="10" coveredmethods="10"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="8" count="1" type="stmt"/>
+      <line num="9" count="1" type="stmt"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="12" count="1" type="stmt"/>
+      <line num="13" count="1" type="stmt"/>
+      <line num="20" count="5" type="stmt"/>
+      <line num="28" count="3" type="stmt"/>
+      <line num="36" count="3" type="stmt"/>
+      <line num="44" count="3" type="stmt"/>
+      <line num="52" count="3" type="stmt"/>
+      <line num="61" count="11" type="stmt"/>
+      <line num="62" count="11" type="cond" truecount="2" falsecount="0"/>
+      <line num="63" count="1" type="stmt"/>
+      <line num="65" count="10" type="stmt"/>
+      <line num="73" count="3" type="stmt"/>
+      <line num="86" count="4" type="stmt"/>
+      <line num="87" count="3" type="stmt"/>
+      <line num="89" count="3" type="stmt"/>
+      <line num="99" count="3" type="stmt"/>
+      <line num="119" count="13" type="cond" truecount="4" falsecount="0"/>
+      <line num="120" count="6" type="stmt"/>
+      <line num="123" count="7" type="stmt"/>
+      <line num="124" count="7" type="stmt"/>
+      <line num="125" count="7" type="stmt"/>
+      <line num="130" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="137" count="1" type="stmt"/>
+      <line num="141" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="142" count="1" type="stmt"/>
+      <line num="145" count="2" type="stmt"/>
+      <line num="148" count="3" type="stmt"/>
+      <line num="158" count="12" type="cond" truecount="4" falsecount="0"/>
+      <line num="159" count="5" type="stmt"/>
+      <line num="162" count="7" type="stmt"/>
+      <line num="163" count="7" type="cond" truecount="4" falsecount="0"/>
+      <line num="164" count="4" type="stmt"/>
+      <line num="168" count="3" type="stmt"/>
+      <line num="169" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="170" count="1" type="stmt"/>
+      <line num="173" count="2" type="stmt"/>
+      <line num="176" count="1" type="stmt"/>
+    </file>
+    <file name="validation.js" path="/Users/wcj/Projects/sealed.fyi.worktrees/2g/backend/functions/shared/validation.js">
+      <metrics statements="92" coveredstatements="89" conditionals="102" coveredconditionals="100" methods="13" coveredmethods="13"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="5" count="1" type="stmt"/>
+      <line num="6" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="8" count="1" type="stmt"/>
+      <line num="9" count="1" type="stmt"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="19" count="38" type="cond" truecount="4" falsecount="0"/>
+      <line num="20" count="1" type="stmt"/>
+      <line num="24" count="37" type="stmt"/>
+      <line num="27" count="37" type="cond" truecount="2" falsecount="0"/>
+      <line num="28" count="5" type="stmt"/>
+      <line num="31" count="32" type="stmt"/>
+      <line num="33" count="32" type="stmt"/>
+      <line num="34" count="32" type="stmt"/>
+      <line num="36" count="0" type="stmt"/>
+      <line num="46" count="29" type="cond" truecount="3" falsecount="1"/>
+      <line num="47" count="0" type="stmt"/>
+      <line num="51" count="29" type="cond" truecount="2" falsecount="0"/>
+      <line num="52" count="29" type="stmt"/>
+      <line num="61" count="25" type="cond" truecount="4" falsecount="0"/>
+      <line num="62" count="1" type="stmt"/>
+      <line num="64" count="24" type="stmt"/>
+      <line num="73" count="19" type="cond" truecount="4" falsecount="0"/>
+      <line num="74" count="4" type="stmt"/>
+      <line num="76" count="15" type="cond" truecount="2" falsecount="0"/>
+      <line num="85" count="17" type="cond" truecount="4" falsecount="0"/>
+      <line num="86" count="3" type="stmt"/>
+      <line num="88" count="14" type="cond" truecount="2" falsecount="0"/>
+      <line num="97" count="20" type="cond" truecount="4" falsecount="0"/>
+      <line num="98" count="5" type="stmt"/>
+      <line num="101" count="15" type="cond" truecount="2" falsecount="0"/>
+      <line num="102" count="2" type="stmt"/>
+      <line num="105" count="13" type="stmt"/>
+      <line num="106" count="13" type="cond" truecount="2" falsecount="0"/>
+      <line num="115" count="17" type="cond" truecount="4" falsecount="0"/>
+      <line num="116" count="4" type="stmt"/>
+      <line num="119" count="13" type="cond" truecount="2" falsecount="0"/>
+      <line num="120" count="1" type="stmt"/>
+      <line num="123" count="12" type="stmt"/>
+      <line num="133" count="17" type="cond" truecount="2" falsecount="0"/>
+      <line num="134" count="8" type="stmt"/>
+      <line num="137" count="9" type="cond" truecount="2" falsecount="0"/>
+      <line num="138" count="3" type="stmt"/>
+      <line num="141" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="142" count="2" type="stmt"/>
+      <line num="145" count="4" type="stmt"/>
+      <line num="154" count="17" type="cond" truecount="4" falsecount="0"/>
+      <line num="155" count="4" type="stmt"/>
+      <line num="158" count="13" type="cond" truecount="2" falsecount="0"/>
+      <line num="159" count="2" type="stmt"/>
+      <line num="163" count="11" type="stmt"/>
+      <line num="172" count="9" type="cond" truecount="4" falsecount="0"/>
+      <line num="173" count="3" type="stmt"/>
+      <line num="178" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="179" count="2" type="stmt"/>
+      <line num="182" count="4" type="stmt"/>
+      <line num="191" count="6" type="cond" truecount="4" falsecount="0"/>
+      <line num="192" count="2" type="stmt"/>
+      <line num="195" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="196" count="1" type="stmt"/>
+      <line num="200" count="3" type="stmt"/>
+      <line num="210" count="6" type="cond" truecount="5" falsecount="0"/>
+      <line num="211" count="3" type="stmt"/>
+      <line num="214" count="3" type="cond" truecount="1" falsecount="1"/>
+      <line num="215" count="0" type="stmt"/>
+      <line num="218" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="219" count="2" type="stmt"/>
+      <line num="222" count="1" type="stmt"/>
+      <line num="231" count="13" type="cond" truecount="4" falsecount="0"/>
+      <line num="232" count="2" type="stmt"/>
+      <line num="235" count="11" type="cond" truecount="2" falsecount="0"/>
+      <line num="236" count="1" type="stmt"/>
+      <line num="239" count="10" type="cond" truecount="2" falsecount="0"/>
+      <line num="240" count="1" type="stmt"/>
+      <line num="243" count="9" type="cond" truecount="2" falsecount="0"/>
+      <line num="244" count="1" type="stmt"/>
+      <line num="247" count="8" type="cond" truecount="2" falsecount="0"/>
+      <line num="248" count="1" type="stmt"/>
+      <line num="251" count="7" type="cond" truecount="5" falsecount="0"/>
+      <line num="252" count="1" type="stmt"/>
+      <line num="255" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="256" count="1" type="stmt"/>
+      <line num="259" count="5" type="cond" truecount="2" falsecount="0"/>
+      <line num="260" count="1" type="stmt"/>
+      <line num="263" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="264" count="1" type="stmt"/>
+      <line num="268" count="3" type="cond" truecount="4" falsecount="0"/>
+      <line num="269" count="1" type="stmt"/>
+      <line num="272" count="2" type="stmt"/>
+      <line num="275" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
