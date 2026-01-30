@@ -78,7 +78,7 @@ This document breaks down the sealed.fyi implementation into sequential phases, 
 POST /token
   Request: (none)
   Response: {
-    token: string,          // JWT, 5 min TTL
+    token: string,          // JWT, 5 min TTL (see JWT claims below)
     nonce: string,          // 16 bytes, hex
     powChallenge: {
       difficulty: number,   // Leading zero bits (e.g., 18)
@@ -86,6 +86,17 @@ POST /token
     },
     expiresAt: number       // Unix timestamp
   }
+
+  JWT Claims:
+    - jti: string           // Unique token ID (prevents replay)
+    - exp: number           // Expiration timestamp (5 min from issue)
+    - iat: number           // Issued-at timestamp
+    - op: string            // Operation type: "create"
+    - nonce: string         // Must match response nonce
+    - pow_difficulty: number // PoW difficulty level
+    - pow_prefix: string    // PoW prefix string
+  
+  JWT Algorithm: HS256 (HMAC-SHA256) with server-side secret
 
 POST /secrets
   Headers:
@@ -111,14 +122,20 @@ POST /secrets
   Response (403): { error: "invalid_pow" }
 
 GET /secrets/{id}
+  Query Parameters:
+    accessToken: string     // Optional: idempotency token from previous access
   Response (200): {
     ciphertext: string,     // base64
     iv: string,             // base64
     salt: string | null,    // base64, if passphrase-protected
-    passphraseProtected: boolean
+    passphraseProtected: boolean,
+    accessToken: string     // Idempotency token (valid for 30 sec re-fetch)
   }
   Response (404): { error: "not_available" }
   // CRITICAL: 404 returned for missing, expired, AND consumed — identical response
+  
+  Idempotency: If accessToken matches lastAccessToken AND within 30 sec window,
+  return secret without decrementing remainingViews (tolerates refresh/prefetch)
 
 DELETE /secrets/{id}
   Headers:
@@ -216,8 +233,12 @@ Attributes:
   burnToken           : S   # 32-char hex for early deletion
   createdAt           : N   # Unix timestamp (seconds)
   expiresAt           : N   # Unix timestamp (seconds) — TTL attribute
+  lastAccessAt        : N   # Unix timestamp of last access (for idempotency window)
+  lastAccessToken     : S   # Random token from last access (for idempotency window)
 
-TTL: Enabled on `expiresAt` attribute
+TTL: Enabled on `expiresAt` attribute (note: DynamoDB TTL is best-effort, typically within 48 hours)
+
+Note: Application MUST check expiresAt on read to enforce immediate expiration.
 
 GSI: None required
 ```
@@ -760,15 +781,20 @@ Comprehensive threat model:
 CloudFront Function or Lambda@Edge for security headers:
 
 ```javascript
-const headers = {
+// Base headers for all responses
+const baseHeaders = {
   'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://api.sealed.fyi; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
   'Referrer-Policy': 'no-referrer',
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
-  'Cache-Control': 'no-store',
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
   'Permissions-Policy': 'geolocation=(), microphone=(), camera=()'
 }
+
+// Cache-Control varies by content type:
+// - HTML (index.html): 'no-store' (always fetch fresh, no local traces)
+// - API responses: 'no-store' (sensitive data)
+// - Static assets (JS, CSS): 'public, max-age=31536000, immutable' (cache with versioned filenames)
 ```
 
 **Deliverables:**

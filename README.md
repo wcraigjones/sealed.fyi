@@ -6,6 +6,10 @@ A privacy-first, single-page web application for creating and sharing secrets wi
 
 sealed.fyi addresses the unsafe persistence and overexposure of sensitive information when shared via conventional messaging, email, or document systems. It is a narrowly scoped tool for transient, high-sensitivity information exchange—not a general-purpose storage product.
 
+### Project Status
+
+This project is in the **planning and design phase**. The documentation describes the target architecture and implementation plan. See [ARCHITECTURE.md](ARCHITECTURE.md) for the phased implementation roadmap.
+
 ### Design Principles
 
 - **Ephemeral by default** — secrets do not persist indefinitely
@@ -56,7 +60,7 @@ Created → Stored (encrypted, opaque) → Retrieved → Destroyed
 - Server cannot decrypt secrets at any point
 - Secrets are not recoverable after destruction
 - Destruction is irreversible and server-enforced
-- Expiration is enforced even if never retrieved
+- Expiration is enforced on read (immediate) and via TTL cleanup (eventual)
 - Metadata is minimized and bounded by retention policies
 
 ---
@@ -70,11 +74,11 @@ Created → Stored (encrypted, opaque) → Retrieved → Destroyed
 | **TTL** | 15 min, 1 hr, 1 day, 7 days, 30 days, 90 days | 1 day | Mandatory; secret deleted on expiry |
 | **Max Views** | 1–5 | 1 | Consumed on successful fetch |
 | **Passphrase** | Optional | Off | Additional client-side KDF; never transmitted |
-| **Burn Link** | Optional | Off | Allows creator to delete early |
+| **Burn Link** | Optional | Off | Creator receives a separate burn URL to delete the secret early |
 
 **Expiration Behavior:**
-- Secret becomes unretrievable
-- Ciphertext is deleted
+- Secret becomes unretrievable immediately (enforced on read via expiry timestamp check)
+- Ciphertext deleted via DynamoDB TTL (best-effort cleanup, typically within 48 hours)
 - Server returns neutral "not available" response (no oracle signals)
 
 **Access Policy:**
@@ -101,17 +105,20 @@ Created → Stored (encrypted, opaque) → Retrieved → Destroyed
 
 **Payload Constraints:**
 - Max plaintext size: 50 KB (text only initially)
+- Max ciphertext size: ~68 KB (base64 encoding adds ~33% overhead)
 - UTF-8, preserve whitespace exactly
 
 **Response Uniformity (Anti-Oracle):**
-- Missing, expired, and consumed secrets return identical responses
-- Same HTTP status (404/410), same response shape
+- Missing, expired, and consumed secrets return identical 404 responses
+- Same HTTP status, same response shape, same timing profile
 - UI messages are helpful but not state-revealing
 
 **Metadata Minimization:**
 - Stored per secret: creation time, expiry time, remaining views, ciphertext length
 - Not stored: user agent, referrer, plaintext-derived signals
-- Expired secrets deleted promptly; logs minimal and short-lived
+- Expired secrets cleaned up via DynamoDB TTL (best-effort, typically within 48 hours)
+- Application-level expiry check on read ensures immediate enforcement
+- Logs minimal and short-lived
 
 ---
 
@@ -256,8 +263,9 @@ docker run -p 8000:8000 amazon/dynamodb-local
 # Start SAM local API
 sam local start-api
 
-# Start frontend dev server
-cd frontend && npm run dev
+# Serve frontend (no build step required - static files only)
+cd frontend && npx serve .
+# Or use any static file server: python -m http.server 3000
 ```
 
 ---
