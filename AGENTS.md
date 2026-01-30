@@ -261,12 +261,17 @@ After all reviews complete:
 4. **If all scores ≥ 7:**
    - Proceed to update the task file
 
-### 5. Update Task File
+### 5. Update Task File and Project Status
 
 - **Always update `docs/work/{phase}/{stream}/TASK.md` before returning to the user**
 - Mark completed exit criteria with `[x]`
 - Add review scores summary
 - If task is complete, add a `## Completed` section with summary and date
+
+- **Always update `STATUS.md` at the project root:**
+  - Update the task status (⏳ Pending → 🔄 In Progress → ✅ Complete)
+  - Add an entry to the "Recent Updates" section with date and summary
+  - Update the phase progress count (e.g., "2/10" → "3/10")
 
 ### Example Task File Update
 ```markdown
