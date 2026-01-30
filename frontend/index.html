@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Share secrets securely. View once, then gone.">
+  <meta name="referrer" content="no-referrer">
+  <title>sealed.fyi</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1><a href="/" aria-label="sealed.fyi home">sealed.fyi</a></h1>
+      <p class="tagline">Share secrets securely. View once, then gone.</p>
+    </header>
+
+    <!-- View: Create Secret -->
+    <section id="view-create" class="view" aria-labelledby="create-heading">
+      <h2 id="create-heading" class="visually-hidden">Create a Secret</h2>
+
+      <form id="create-form" aria-label="Create secret form">
+        <div class="form-group">
+          <label for="secret-input">Your secret</label>
+          <textarea
+            id="secret-input"
+            name="secret"
+            placeholder="Enter your secret here..."
+            maxlength="51200"
+            required
+            aria-describedby="char-count"
+          ></textarea>
+          <div class="char-count" id="char-count" aria-live="polite">
+            <span id="char-current">0</span> / <span id="char-max">50,000</span> characters
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ttl-select">Expires after</label>
+            <select id="ttl-select" name="ttl" aria-describedby="ttl-help">
+              <option value="900">15 minutes</option>
+              <option value="3600">1 hour</option>
+              <option value="86400" selected>1 day</option>
+              <option value="604800">7 days</option>
+              <option value="2592000">30 days</option>
+              <option value="7776000">90 days</option>
+            </select>
+            <span id="ttl-help" class="form-help">Secret auto-deletes after this time</span>
+          </div>
+
+          <div class="form-group">
+            <label for="views-select">Max views</label>
+            <select id="views-select" name="maxViews" aria-describedby="views-help">
+              <option value="1" selected>1 view</option>
+              <option value="2">2 views</option>
+              <option value="3">3 views</option>
+              <option value="4">4 views</option>
+              <option value="5">5 views</option>
+            </select>
+            <span id="views-help" class="form-help">Secret deleted after this many views</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox-group">
+            <input
+              type="checkbox"
+              id="passphrase-toggle"
+              name="usePassphrase"
+              aria-controls="passphrase-group"
+              aria-expanded="false"
+            >
+            <label for="passphrase-toggle">Protect with passphrase</label>
+          </div>
+
+          <div id="passphrase-group" class="passphrase-input hidden">
+            <label for="passphrase-input" class="visually-hidden">Passphrase</label>
+            <input
+              type="password"
+              id="passphrase-input"
+              name="passphrase"
+              placeholder="Enter passphrase..."
+              autocomplete="new-password"
+              aria-describedby="passphrase-help"
+              tabindex="-1"
+            >
+            <span id="passphrase-help" class="form-help">Recipient will need this passphrase to view the secret</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="create-btn">
+          <span class="btn-text">Create Secret Link</span>
+        </button>
+      </form>
+    </section>
+
+    <!-- View: Creating (Loading State) -->
+    <section id="view-creating" class="view hidden" aria-labelledby="creating-heading" aria-live="polite">
+      <h2 id="creating-heading" class="visually-hidden">Creating Secret</h2>
+
+      <div class="loading-container">
+        <div class="spinner" role="status" aria-label="Loading">
+          <div class="spinner-ring"></div>
+        </div>
+        <p class="loading-message" id="loading-message">Generating secure link...</p>
+        <div class="progress-container" id="pow-progress">
+          <progress id="pow-progress-bar" class="progress-bar" value="0" max="100" aria-label="Proof of work progress">0%</progress>
+          <span class="progress-text" id="progress-text">Computing proof-of-work...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- View: Link Generated -->
+    <section id="view-link" class="view hidden" aria-labelledby="link-heading">
+      <h2 id="link-heading">Secret Link Created</h2>
+
+      <div class="link-container">
+        <div class="form-group">
+          <label for="link-output">Share this link</label>
+          <div class="input-with-button">
+            <input
+              type="text"
+              id="link-output"
+              readonly
+              aria-describedby="link-warning"
+            >
+            <button type="button" class="btn btn-secondary" id="copy-link-btn" aria-label="Copy link to clipboard">
+              <span class="btn-text">Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="alert alert-warning" id="link-warning" role="alert">
+          <span class="alert-icon" aria-hidden="true">⚠</span>
+          <span id="link-warning-text">This link can only be viewed <strong id="views-remaining">1</strong> time(s).</span>
+        </div>
+
+        <div id="burn-link-section" class="burn-section hidden">
+          <details>
+            <summary>Burn link (delete early)</summary>
+            <div class="burn-content">
+              <p>Use this link to delete the secret before it's viewed:</p>
+              <div class="input-with-button">
+                <input
+                  type="text"
+                  id="burn-link-output"
+                  readonly
+                  aria-label="Burn link"
+                >
+                <button type="button" class="btn btn-secondary" id="copy-burn-btn" aria-label="Copy burn link to clipboard">
+                  <span class="btn-text">Copy</span>
+                </button>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button type="button" class="btn btn-primary" id="create-another-btn">Create Another Secret</button>
+      </div>
+    </section>
+
+    <!-- View: Reveal Secret -->
+    <section id="view-reveal" class="view hidden" aria-labelledby="reveal-heading">
+      <h2 id="reveal-heading">Secret Ready</h2>
+
+      <div class="reveal-container">
+        <p class="reveal-description">Someone shared a secret with you.</p>
+
+        <div class="alert alert-warning" role="alert">
+          <span class="alert-icon" aria-hidden="true">⚠</span>
+          <span>This secret will be destroyed after viewing.</span>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-large" id="reveal-btn">
+          <span class="btn-text">Reveal Secret</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- View: Passphrase Input -->
+    <section id="view-passphrase" class="view hidden" aria-labelledby="passphrase-heading">
+      <h2 id="passphrase-heading">Passphrase Required</h2>
+
+      <form id="passphrase-form" aria-label="Enter passphrase form">
+        <p class="passphrase-description">This secret is protected with a passphrase.</p>
+
+        <div class="form-group">
+          <label for="reveal-passphrase">Enter passphrase</label>
+          <input
+            type="password"
+            id="reveal-passphrase"
+            name="passphrase"
+            placeholder="Enter passphrase..."
+            required
+            autocomplete="current-password"
+            aria-describedby="passphrase-error"
+          >
+          <div class="error-message hidden" id="passphrase-error" role="alert" aria-live="polite"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submit-passphrase-btn">
+          <span class="btn-text">Reveal Secret</span>
+        </button>
+      </form>
+    </section>
+
+    <!-- View: Display Secret -->
+    <section id="view-secret" class="view hidden" aria-labelledby="secret-heading">
+      <h2 id="secret-heading">Your Secret</h2>
+
+      <div class="secret-container">
+        <div class="form-group">
+          <div class="secret-header">
+            <span class="secret-label" id="secret-output-label">Secret content</span>
+            <button type="button" class="btn btn-secondary btn-small" id="copy-secret-btn" aria-label="Copy secret to clipboard">
+              <span class="btn-text">Copy</span>
+            </button>
+          </div>
+          <pre id="secret-output" class="secret-content" tabindex="0" aria-labelledby="secret-output-label"></pre>
+        </div>
+
+        <div class="alert alert-success" role="status">
+          <span class="alert-icon" aria-hidden="true">✓</span>
+          <span>This secret has been destroyed and cannot be viewed again.</span>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <a href="/" class="btn btn-primary">Create a New Secret</a>
+      </div>
+    </section>
+
+    <!-- View: Error -->
+    <section id="view-error" class="view hidden" aria-labelledby="error-heading">
+      <h2 id="error-heading">
+        <span class="error-icon" aria-hidden="true">✕</span>
+        <span id="error-title">Something went wrong</span>
+      </h2>
+
+      <div class="error-container">
+        <p id="error-message" class="error-description">The requested secret is not available. It may have expired, been viewed, or never existed.</p>
+      </div>
+
+      <div class="action-buttons">
+        <a href="/" class="btn btn-primary">Create a New Secret</a>
+      </div>
+    </section>
+
+    <footer>
+      <nav aria-label="Footer navigation">
+        <ul class="footer-links">
+          <li><a href="https://github.com/example/sealed.fyi" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><span class="separator" aria-hidden="true">·</span></li>
+          <li><a href="#how-it-works" id="how-it-works-link">How it works</a></li>
+          <li><span class="separator" aria-hidden="true">·</span></li>
+          <li><a href="#privacy" id="privacy-link">Privacy</a></li>
+        </ul>
+      </nav>
+      <p class="footer-tagline">End-to-end encrypted. No accounts. No tracking.</p>
+    </footer>
+  </main>
+
+  <script src="js/crypto.js"></script>
+  <script src="js/pow.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
