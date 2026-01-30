@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: sealed.fyi - Privacy-first secret sharing API
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: nodejs20.x
+    MemorySize: 256
+    Environment:
+      Variables:
+        NODE_ENV: production
+
+Parameters:
+  JwtSecret:
+    Type: String
+    Description: Secret key for signing JWTs
+    NoEcho: true
+
+Resources:
+  # HTTP API Gateway
+  SealedApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: $default
+      CorsConfiguration:
+        AllowOrigins:
+          - https://sealed.fyi
+          - http://localhost:3000
+        AllowMethods:
+          - GET
+          - POST
+          - DELETE
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+          - X-Burn-Token
+        MaxAge: 300
+
+  # Create Token Lambda
+  CreateTokenFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: sealed-create-token
+      CodeUri: functions/create-token/
+      Handler: index.handler
+      Description: Issue short-lived authorization tokens
+      Environment:
+        Variables:
+          JWT_SECRET: !Ref JwtSecret
+      Events:
+        PostToken:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref SealedApi
+            Path: /token
+            Method: POST
+
+Outputs:
+  ApiEndpoint:
+    Description: API Gateway endpoint URL
+    Value: !Sub 'https://${SealedApi}.execute-api.${AWS::Region}.amazonaws.com'
+  CreateTokenFunction:
+    Description: Create Token Lambda Function ARN
+    Value: !GetAtt CreateTokenFunction.Arn

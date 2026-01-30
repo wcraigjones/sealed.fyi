@@ -1,0 +1,17 @@
+{
+  "name": "sealed-create-token",
+  "version": "1.0.0",
+  "description": "Lambda function to issue short-lived authorization tokens for sealed.fyi",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test index.test.js"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "private": true
+}
