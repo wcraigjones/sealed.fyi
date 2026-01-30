@@ -201,6 +201,48 @@ Use `mega-review` for comprehensive code review with synthesized feedback from a
 
 ---
 
+## Agent Workflow
+
+**Every agent must follow this workflow:**
+
+### 1. Task Assignment
+- Agents must be assigned to a **specific task** (e.g., "Phase 2, Stream A" or "2A")
+- Read the task file at `docs/work/{phase}/{stream}/TASK.md` before starting
+- Do not work on tasks outside your assignment without explicit approval
+
+### 2. During Work
+- Follow the scope and requirements in the task file
+- Check off exit criteria as you complete them
+- If blocked or scope changes, update the task file to reflect current state
+
+### 3. Before Completing
+- **Run `mega-review`** on all code you created or modified
+- Address critical issues flagged by multiple models
+- Document any unresolved issues or known limitations
+
+### 4. Update Task File
+- **Always update `docs/work/{phase}/{stream}/TASK.md` before returning to the user**
+- Mark completed exit criteria with `[x]`
+- Add any notes, blockers, or follow-up items
+- If task is complete, add a `## Completed` section with summary and date
+
+### Example Task File Update
+```markdown
+## Exit Criteria
+
+- [x] All functions implemented
+- [x] All tests passing
+- [x] Code reviewed via mega-review
+- [ ] Awaiting integration testing (Phase 3)
+
+## Completed
+- **Date:** 2026-01-30
+- **Summary:** Implemented crypto.js with all functions per contract. Mega-review passed with no critical issues.
+- **Notes:** Consider adding Web Worker support for PoW in future iteration.
+```
+
+---
+
 ## Key Invariants
 
 These must be maintained throughout development:
