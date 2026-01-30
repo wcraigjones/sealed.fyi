@@ -9,7 +9,7 @@ sealed.fyi is organized into 4 sequential phases. Phases must complete before th
 | Phase | Description | Streams | Status |
 |-------|-------------|---------|--------|
 | **1** | Contracts & Schemas | 1 | ✅ Complete |
-| **2** | Core Implementation | 10 | 🔄 In Progress (2/10) |
+| **2** | Core Implementation | 10 | 🔄 In Progress (3/10) |
 | **3** | Integration & Testing | 6 | ⏳ Pending |
 | **4** | Production & Hardening | 5 | ⏳ Pending |
 
@@ -29,7 +29,7 @@ sealed.fyi is organized into 4 sequential phases. Phases must complete before th
 |--------|------|--------|-------|
 | **2A** | Crypto Library | ✅ Complete | `frontend/js/crypto.js`, `frontend/js/crypto.test.js` |
 | **2B** | PoW Library | ⏳ Pending | `frontend/js/pow.js`, `frontend/js/pow.test.js` |
-| **2C** | Create Token Lambda | ⏳ Pending | `backend/functions/create-token/` |
+| **2C** | Create Token Lambda | ✅ Complete | `backend/functions/create-token/` |
 | **2D** | Create Secret Lambda | ⏳ Pending | `backend/functions/create-secret/` |
 | **2E** | Get Secret Lambda | ⏳ Pending | `backend/functions/get-secret/` |
 | **2F** | Burn Secret Lambda | ⏳ Pending | `backend/functions/burn-secret/` |
@@ -78,6 +78,7 @@ sealed.fyi is organized into 4 sequential phases. Phases must complete before th
 
 ## Recent Updates
 
+- **2026-01-30**: Completed Phase 2C (Create Token Lambda) - 23 tests passing, JWT token issuance with PoW challenge
 - **2026-01-30**: Completed Phase 2A (Crypto Library) - 47 tests passing
 - **2026-01-30**: Completed Phase 2J (Infrastructure) - SAM template validated
 - **2026-01-30**: Completed Phase 1A (Contracts) - All docs reviewed and finalized

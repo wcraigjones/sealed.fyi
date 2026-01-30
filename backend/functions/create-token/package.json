@@ -1,0 +1,21 @@
+{
+  "name": "create-token",
+  "version": "1.0.0",
+  "description": "Lambda function to issue short-lived authorization tokens for sealed.fyi",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test index.test.js"
+  },
+  "keywords": [
+    "lambda",
+    "jwt",
+    "token"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
