@@ -11,7 +11,7 @@ tools:
   - search_file_content
   - list_directory
   - run_shell_command
-  - write_new_file
+  - write_file
   - replace
 ---
 
