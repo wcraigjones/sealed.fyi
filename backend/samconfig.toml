@@ -1,0 +1,29 @@
+version = 0.1
+
+[default]
+[default.global.parameters]
+stack_name = "sealed-fyi"
+
+[default.build.parameters]
+cached = true
+parallel = true
+
+[default.validate.parameters]
+lint = true
+
+[default.deploy.parameters]
+resolve_s3 = true
+s3_prefix = "sealed-fyi"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+confirm_changeset = true
+# IMPORTANT: Set JwtSecret in production with a strong random value
+# parameter_overrides = "JwtSecret=YOUR_SECRET_HERE"
+
+[default.local_start_api.parameters]
+warm_containers = "EAGER"
+host = "0.0.0.0"
+port = 3000
+
+[default.local_invoke.parameters]
+skip_pull_image = false

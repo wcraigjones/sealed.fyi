@@ -1,0 +1,195 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: sealed.fyi - Privacy-first self-destructing secrets
+
+Conditions:
+  IsProduction: !Equals [!Ref Environment, production]
+
+Parameters:
+  JwtSecret:
+    Type: String
+    NoEcho: true
+    Description: Secret for signing JWTs (min 32 chars recommended)
+    MinLength: 16
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - production
+    Description: Deployment environment (affects CORS origins)
+
+Globals:
+  Function:
+    Runtime: nodejs20.x
+    Timeout: 10
+    MemorySize: 256
+    Environment:
+      Variables:
+        JWT_SECRET: !Ref JwtSecret
+        DYNAMODB_TABLE: !Ref SecretsTable
+
+Resources:
+  # ====================
+  # DynamoDB Table
+  # ====================
+  SecretsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "sealed-secrets-${Environment}"
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+      Tags:
+        - Key: Project
+          Value: sealed-fyi
+        - Key: Environment
+          Value: !Ref Environment
+
+  # ====================
+  # HTTP API Gateway
+  # ====================
+  ApiGateway:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: api
+      CorsConfiguration:
+        AllowOrigins: !If
+          - IsProduction
+          - - https://sealed.fyi
+          - - https://sealed.fyi
+            - http://localhost:3000
+        AllowMethods:
+          - GET
+          - POST
+          - DELETE
+          - OPTIONS
+        AllowHeaders:
+          - Authorization
+          - Content-Type
+          - X-Burn-Token
+        MaxAge: 3600
+
+  # ====================
+  # Lambda Functions
+  # ====================
+
+  # POST /token - Issue authorization tokens
+  CreateTokenFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "sealed-create-token-${Environment}"
+      Handler: index.handler
+      CodeUri: functions/create-token/
+      Description: Issues short-lived JWTs for secret creation
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /token
+            Method: POST
+            ApiId: !Ref ApiGateway
+
+  # POST /secrets - Create encrypted secrets
+  CreateSecretFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "sealed-create-secret-${Environment}"
+      Handler: index.handler
+      CodeUri: functions/create-secret/
+      Description: Validates token/PoW and stores encrypted secrets
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:PutItem
+              Resource: !GetAtt SecretsTable.Arn
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /secrets
+            Method: POST
+            ApiId: !Ref ApiGateway
+
+  # GET /secrets/{id} - Retrieve secrets
+  GetSecretFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "sealed-get-secret-${Environment}"
+      Handler: index.handler
+      CodeUri: functions/get-secret/
+      Description: Fetches and consumes encrypted secrets
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+              Resource: !GetAtt SecretsTable.Arn
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /secrets/{id}
+            Method: GET
+            ApiId: !Ref ApiGateway
+
+  # DELETE /secrets/{id} - Burn secrets
+  BurnSecretFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "sealed-burn-secret-${Environment}"
+      Handler: index.handler
+      CodeUri: functions/burn-secret/
+      Description: Allows creators to delete secrets early
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DeleteItem
+              Resource: !GetAtt SecretsTable.Arn
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /secrets/{id}
+            Method: DELETE
+            ApiId: !Ref ApiGateway
+
+Outputs:
+  ApiEndpoint:
+    Description: API Gateway endpoint URL
+    Value: !Sub "https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/api"
+
+  TableName:
+    Description: DynamoDB table name
+    Value: !Ref SecretsTable
+
+  TableArn:
+    Description: DynamoDB table ARN
+    Value: !GetAtt SecretsTable.Arn
+
+  CreateTokenFunctionArn:
+    Description: Create Token Lambda ARN
+    Value: !GetAtt CreateTokenFunction.Arn
+
+  CreateSecretFunctionArn:
+    Description: Create Secret Lambda ARN
+    Value: !GetAtt CreateSecretFunction.Arn
+
+  GetSecretFunctionArn:
+    Description: Get Secret Lambda ARN
+    Value: !GetAtt GetSecretFunction.Arn
+
+  BurnSecretFunctionArn:
+    Description: Burn Secret Lambda ARN
+    Value: !GetAtt BurnSecretFunction.Arn

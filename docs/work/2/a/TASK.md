@@ -51,6 +51,33 @@ async function decryptSecret(payload, urlFragment: string, passphrase?: string):
 - None (uses browser Web Crypto API only)
 
 ## Exit Criteria
-- [ ] All functions implemented
-- [ ] All tests passing
-- [ ] Code reviewed
+- [x] All functions implemented
+- [x] All tests passing (47 tests)
+- [x] Code reviewed
+
+## Completed
+
+- **Date:** 2026-01-30
+- **Summary:** Implemented complete crypto library with all functions per contract.
+  
+  **Implemented:**
+  - Core functions: generateKey, generateIV, generateSalt, encrypt, decrypt
+  - Key derivation: deriveKeyFromPassphrase (PBKDF2-SHA256, 100k iterations)
+  - Key encoding: keyToBase64Url, base64UrlToKey
+  - High-level API: encryptSecret, decryptSecret (with passphrase key wrapping)
+  - Utility functions: base64/base64url encoding, string encoding, byte concatenation
+  
+  **Test Coverage (47 tests):**
+  - Utility functions (base64, base64url, string encoding)
+  - Key generation (uniqueness, extractability, usages)
+  - Encryption/decryption (round-trip, unicode, 50KB payload, failure cases)
+  - Passphrase derivation (determinism, different salt/passphrase)
+  - Key encoding (round-trip, URL-safe output, correct length)
+  - High-level API (with/without passphrase, error cases)
+  
+  **Security Notes:**
+  - All crypto via Web Crypto API (no polyfills)
+  - Keys are extractable only when needed for URL fragment
+  - IVs generated randomly for each encryption
+  - Passphrase key wrapping uses AES-GCM
+  - 100,000 PBKDF2 iterations for brute-force resistance

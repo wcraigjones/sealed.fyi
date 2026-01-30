@@ -1,0 +1,14 @@
+{
+  "name": "sealed-fyi-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "sealed.fyi frontend - Privacy-first secret sharing",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0"
+  }
+}
